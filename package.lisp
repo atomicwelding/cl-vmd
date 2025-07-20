@@ -1,5 +1,8 @@
 (defpackage #:cl-vmd
-  (:use #:cl #:uiop #:usocket))
+  (:use #:cl #:uiop #:usocket)
+  (:export #:start-vmd
+	   #:send-vmd
+	   #:stop-vmd))
 
 (in-package #:cl-vmd)
 
@@ -17,7 +20,7 @@
 (defparameter *vmd-process* nil)
 
 ;; main
-(defun start ()
+(defun start-vmd ()
   (setf *vmd-process*
         (uiop:launch-program
          (list *vmd-executable*
@@ -28,13 +31,13 @@
          :wait nil)))
 
 
-(defun send (command &optional (host *host*) (port *port*))
+(defun send-vmd (command &optional (host *host*) (port *port*))
   (usocket:with-client-socket (socket stream host port)
     (format stream "~a~%" command)
     (force-output stream)
     (read-line stream nil nil)))
 
-(defun stop ()
-  (send "quit"))
+(defun stop-vmd ()
+  (send-vmd "quit"))
 
 
