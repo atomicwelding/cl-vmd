@@ -25,7 +25,6 @@ proc handle_client {sock addr port} {
     # get the lines
     gets $sock line
     puts $line
-    puts $sock "$line"
 
     # special handle to quit the loop
     if {$line eq "quit"} {
@@ -39,7 +38,7 @@ proc handle_client {sock addr port} {
     if {[catch {eval $line} result]} {
         puts $sock "ERROR: $result"
     } else {
-        puts $sock "$addr:$port -> $result"
+        puts $sock "LOG: $result"
     }    
 }
 
